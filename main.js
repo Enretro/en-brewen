@@ -18,9 +18,17 @@ async function petsArea() {
   const petsData = await petsPromise.json()
   petsData.forEach(element => {
     // loop through each element of array and return each arguments of array
-    const clone = template.content.cloneNode(true)
 
+    const clone = template.content.cloneNode(true)
     clone.querySelector("h3").textContent = element.name
+    clone.querySelector(".pet-description").textContent = element.description
+    clone.querySelector(".pet-age").textContent = createAgeText(element.birthYear)
+
+    if (!element.photo) element.photo = "images/fallback.jpg"
+
+    clone.querySelector(".pet-card-photo img").src = element.photo
+    clone.querySelector(".pet-card-photo img").alt = `A ${element.species} named ${element.name}.`
+
 
     wrapper.appendChild(clone)
   });
@@ -28,3 +36,14 @@ async function petsArea() {
 }
 
 petsArea()
+
+function createAgeText(birthYear) {
+  const currentYear = new Date().getFullYear()
+  const age = currentYear - birthYear
+
+  if (age == 1) return "one year old"
+  if (age == 0) return "less then a year old"
+  // return age + " years old"
+  return `${age} years old`
+
+}
