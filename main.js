@@ -1,3 +1,7 @@
+const template = document.querySelector("#pet-card-template")
+const wrapper = document.createDocumentFragment()
+
+
 async function temp() {
   // Promise is something that it's not copleted yet so we have to wait-await function to actualy finished
   const weatherPromise = await fetch("https://api.weather.gov/gridpoints/MFL/110,50/forecast")
@@ -14,8 +18,13 @@ async function petsArea() {
   const petsData = await petsPromise.json()
   petsData.forEach(element => {
     // loop through each element of array and return each arguments of array
-    console.log(element.name)
+    const clone = template.content.cloneNode(true)
+
+    clone.querySelector("h3").textContent = element.name
+
+    wrapper.appendChild(clone)
   });
+  document.querySelector(".list-of-pets").appendChild(wrapper)
 }
 
 petsArea()
